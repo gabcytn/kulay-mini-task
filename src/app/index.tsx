@@ -1,29 +1,26 @@
-import "../global.css"
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { PRODUCTS } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { ProductCard } from "../components/ProductCard";
-import { CartSection } from "../components/CartSection";
 import { StatusLine } from "../components/StatusLine";
 import { Text } from "../components/ui";
 
 export default function Home() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const { itemCount } = useCart();
 
   return (
-    <KeyboardAvoidingView
-      className="flex-1 bg-canvas"
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
+    <View className="flex-1 bg-canvas">
       <ScrollView
         className="flex-1 px-5"
         contentContainerStyle={{
           paddingTop: insets.top + 20,
           paddingBottom: 32,
         }}
-        keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-row items-start justify-between mb-8">
@@ -35,11 +32,17 @@ export default function Home() {
               Small upgrades for a better workspace.
             </Text>
           </View>
-          <View className="bg-surface rounded-full min-w-[40px] h-10 px-3 items-center justify-center mt-1">
-            <Text variant="mono" tone="accent" className="text-sm">
+          <Pressable
+            onPress={() => router.push("/cart")}
+            accessibilityRole="button"
+            accessibilityLabel={`Open cart, ${itemCount} items`}
+            className="bg-surface rounded-full h-10 px-4 flex-row items-center mt-1 active:opacity-70"
+          >
+            <Feather name="shopping-bag" size={15} color="#8fb996" />
+            <Text variant="mono" tone="accent" className="text-sm ml-2">
               {itemCount}
             </Text>
-          </View>
+          </Pressable>
         </View>
 
         <Text variant="display" className="text-2xl mb-3">
@@ -48,11 +51,9 @@ export default function Home() {
         {PRODUCTS.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}
-
-        <CartSection />
       </ScrollView>
 
       <StatusLine />
-    </KeyboardAvoidingView>
+    </View>
   );
 }

@@ -27,6 +27,7 @@ type CartContextValue = {
   addToCart: (product: Product) => void;
   decrement: (productId: string) => void;
   removeFromCart: (productId: string) => void;
+  clearCart: () => void;
   applyVoucher: (code: string) => string | null; // returns error message or null
   clearVoucher: () => void;
 };
@@ -42,7 +43,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const existing = prev.find((l) => l.product.id === product.id);
       if (existing) {
         return prev.map((l) =>
-          l.product.id === product.id ? { ...l, quantity: l.quantity + 1 } : l
+          l.product.id === product.id ? { ...l, quantity: l.quantity + 1 } : l,
         );
       }
       return [...prev, { product, quantity: 1 }];
@@ -53,9 +54,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setLines((prev) =>
       prev
         .map((l) =>
-          l.product.id === productId ? { ...l, quantity: l.quantity - 1 } : l
+          l.product.id === productId ? { ...l, quantity: l.quantity - 1 } : l,
         )
-        .filter((l) => l.quantity > 0)
+        .filter((l) => l.quantity > 0),
     );
   }, []);
 
@@ -63,6 +64,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setLines((prev) => prev.filter((l) => l.product.id !== productId));
   }, []);
 
+  const clearCart = useCallback(() => setLines([]), []);
   const applyVoucher = useCallback(
     (raw: string) => {
       const code = raw.trim().toLowerCase();
@@ -72,7 +74,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setVoucherCode(code);
       return null;
     },
-    [lines.length]
+    [lines.length],
   );
 
   const clearVoucher = useCallback(() => setVoucherCode(null), []);
@@ -87,7 +89,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       itemCount: lines.reduce((sum, l) => sum + l.quantity, 0),
       subtotal: lines.reduce((sum, l) => sum + l.product.price * l.quantity, 0),
     }),
-    [lines]
+    [lines],
   );
 
   const voucherRate = voucherCode ? VOUCHERS[voucherCode] : 0;
@@ -100,7 +102,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const quantityOf = useCallback(
     (productId: string) =>
       lines.find((l) => l.product.id === productId)?.quantity ?? 0,
-    [lines]
+    [lines],
   );
 
   const value = useMemo(
@@ -116,13 +118,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
       addToCart,
       decrement,
       removeFromCart,
+      clearCart,
       applyVoucher,
       clearVoucher,
     }),
     [
-      lines, itemCount, subtotal, discount, total, voucherCode, voucherRate,
-      quantityOf, addToCart, decrement, removeFromCart, applyVoucher, clearVoucher,
-    ]
+      lines,
+      itemCount,
+      subtotal,
+      discount,
+      total,
+      voucherCode,
+      voucherRate,
+      quantityOf,
+      addToCart,
+      decrement,
+      removeFromCart,
+      clearCart,
+      applyVoucher,
+      clearVoucher,
+    ],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

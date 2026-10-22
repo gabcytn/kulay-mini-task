@@ -14,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
   // Brief "Added" confirmation on the button
   useEffect(() => {
     if (!justAdded) return;
-    const t = setTimeout(() => setJustAdded(false), 1200);
+    const t = setTimeout(() => setJustAdded(false), 500);
     return () => clearTimeout(t);
   }, [justAdded]);
 
@@ -56,7 +56,7 @@ export function ProductCard({ product }: { product: Product }) {
           accessibilityLabel={`Add ${product.productName} to cart`}
           className="bg-accent rounded-lg px-4 py-2 flex-row items-center active:opacity-80"
         >
-          <Feather name={justAdded ? "check" : "plus"} size={14} color="#1b1f1d" />
+          {justAdded && <Feather name="check" size={14} color="#1b1f1d" />}
           <Text variant="strong" tone="canvas" className="ml-1.5 text-sm">
             {justAdded ? "Added" : "Add to cart"}
           </Text>
