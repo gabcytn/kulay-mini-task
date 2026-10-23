@@ -146,3 +146,9 @@ npx tsc --noEmit
 - Multiple voucher types (fixed amount, minimum spend, expiry)
 - Unit tests for cart logic and voucher validation
 - Haptic feedback and animated list transitions
+
+---
+
+## APK
+
+Download [APK](https://drive.google.com/file/d/1oGGpgW0ApQ4p8aMx1QTKbG6Vd-3-mCVl/view?usp=sharing)
