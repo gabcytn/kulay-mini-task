@@ -1,4 +1,4 @@
-# Desk Goods
+# Kulay Mini Task
 
 A small shopping cart app built with **React Native (Expo)** and **Tailwind CSS (NativeWind)**. Browse a static product catalogue, add items to a cart, apply a voucher code, and check out.
 
@@ -14,7 +14,7 @@ Built as a take-home assignment. The focus is clean architecture, idiomatic use 
 
 | Products | Cart | Voucher applied | Order placed |
 | :------: | :--: | :-------------: | :----------: |
-| ![Products](./docs/products.png) | ![Cart](./docs/cart.png) | ![Voucher](./docs/voucher.png) | ![Order placed](./docs/order-placed.png) |
+| ![Products](./docs/products.jpg) | ![Cart](./docs/cart.jpg) | ![Voucher](./docs/voucher.jpg) | ![Order placed](./docs/order-placed.jpg) |
 
 ---
 
